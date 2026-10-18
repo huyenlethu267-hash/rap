@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DongKichTran.vn - Web Tập Rap Karaoke Pro</title>
+    <style>
+        body { background: #0a0a0a; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; margin: 0; }
+        .header-brand { color: #ff3366; font-size: 2.8rem; font-weight: 900; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 3px; text-shadow: 0 0 15px rgba(255,51,102,0.4); }
+        .domain-tag { font-size: 1rem; color: #555; font-weight: bold; letter-spacing: 1px; margin-top: -10px; margin-bottom: 30px; text-transform: lowercase; }
+        .sub { color: #888; font-size: 1rem; margin-bottom: 30px; font-style: italic; }
+        .main-box { max-width: 650px; margin: 0 auto; background: #111; padding: 30px; border-radius: 16px; border: 1px solid #222; box-shadow: 0 15px 40px rgba(0,0,0,0.8); }
+        
+        /* Giao diện trình phát nhạc */
+        .audio-player { margin-bottom: 30px; width: 100%; height: 45px; border-radius: 30px; background: #222; outline: none; }
+        
+        /* Giao diện lời bài hát */
+        .lyrics-container { display: flex; flex-direction: column; gap: 18px; margin-top: 10px; padding: 10px; }
+        .line { font-size: 1.3rem; color: #3d3d3d; transition: all 0.25s ease-in-out; font-weight: 700; line-height: 1.6; }
+        
+        /* Khi chữ được kích hoạt đúng giây */
+        .line.highlight { color: #fff; transform: scale(1.05); text-shadow: 0 0 15px rgba(255,51,102,1); }
+        .line.highlight.hook-line { color: #ff3366; }
+        
+        /* Chữ đã đọc qua */
+        .line.passed { color: #666; opacity: 0.4; transform: scale(0.98); }
+        
+        /* Đoạn Hook đặc trưng */
+        .hook-line { border-left: 4px solid #ff3366; padding-left: 15px; font-size: 1.4rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Chèn Tên Web Thương Hiệu -->
+    <div class="header-brand">ĐÓNG KỊCH TRẦN</div>
+    <div class="domain-tag">www.dongkichtran.vn</div>
+    
+    <p class="sub">Hệ thống chạy chữ tự động theo nhịp beat Trap Vinagang</p>
+
+    <div class="main-box">
+        <!-- Đã chèn sẵn link luồng âm thanh Beat Trap 808 cực căng phù hợp với lời bài hát -->
+        <audio id="rapTrack" class="audio-player" controls>
+            <source src="https://soundhelix.com" type="audio/mpeg">
+            Trình duyệt của bạn không hỗ trợ trình phát âm thanh này.
+        </audio>
+
+        <!-- Kho lời nhạc khớp thời gian chuẩn từng giây (Timeline) -->
+        <div class="lyrics-container">
+            <div class="line" data-time="0">Đêm nay tụi tao bật mood, không thích nói chuyện đạo đức 🗣️</div>
+            <div class="line" data-time="4">Gặp mấy em gái mlem, nhìn là thấy thèm cạo râu 🪒</div>
+            <div class="line" data-time="8">Em thích cây cơ của tao, bảo là chọc toàn vào lỗ 🎯</div>
+            <div class="line" data-time="12">Đóng thẳng vào trong trung tâm, làm cho nước tràn vào ổ 💦</div>
+            <div class="line" data-time="16">Vần tao tuôn ra liên tục, như cách bọn mày dập dịch 🧬</div>
+            <div class="line" data-time="20">Nhạc này bật trong phòng kín, nghe tiếng bạch bạch sập sình 🔉</div>
+            <div class="line" data-time="24">Khen tao badboy chính hiệu, biết cách khiến nàng leo cao 📈</div>
+            
+            <!-- HOOK CHIẾN - TỰ ĐỘNG ĐỔI CỰC SÁNG KHI ĐẾN KHÚC CAO TRÀO -->
+            <div class="line hook-line" data-time="28">Đóng kịch trần... Đóng đóng kịch trần! 🍆</div>
+            <div class="line hook-line" data-time="32">Ngoan ngoãn cái coi... Sao em cứ rên kịch liệt? 🥵</div>
+            <div class="line hook-line" data-time="36">Đóng kịch trần... Đóng đóng kịch trần! 🍑</div>
+            <div class="line hook-line" data-time="40">Chơi cho tới bến... Đéo nói chuyện phân trần! 🔥</div>
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('rapTrack');
+        const lines = document.querySelectorAll('.line');
+
+        // Bộ xử lý quét thời gian thực tế của bài nhạc để đổi màu chữ karaoke
+        audio.addEventListener('timeupdate', () => {
+            const currentTime = audio.currentTime;
+            
+            lines.forEach((line, index) => {
+                const lineTime = parseFloat(line.getAttribute('data-time'));
+                const nextLineTime = lines[index + 1] ? parseFloat(lines[index + 1].getAttribute('data-time')) : Infinity;
+
+                if (currentTime >= lineTime && currentTime < nextLineTime) {
+                    line.classList.add('highlight');
+                    line.classList.remove('passed');
+                } else if (currentTime >= nextLineTime) {
+                    line.classList.remove('highlight');
+                    line.classList.add('passed');
+                } else {
+                    line.classList.remove('highlight', 'passed');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
